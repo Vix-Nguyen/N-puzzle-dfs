@@ -2,6 +2,7 @@ import sys
 import grid
 import solver
 
+
 # validate command line input
 if len(sys.argv) != 2:
     sys.stderr.write(
@@ -31,6 +32,7 @@ try:
 except ValueError:
     print('no solution exists')
     sys.exit()
+
 
 solution_metrics = solver.depth_first_search()
 

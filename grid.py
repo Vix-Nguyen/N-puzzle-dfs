@@ -10,11 +10,12 @@ class Grid:
         # don't just bind to input state. we want the object to have its OWN state
         # https://docs.python.org/2/library/copy.html
         self.state = copy.deepcopy(input_state)
-        #print("Init grid: ", self.state)
+
         self.path_history = list()
 
-        # TODO: we're calculating n here, but passing it between objects elsewhere. Tidy?
         self.n = len(input_state[0])
+
+        # self.root() = Tk()
 
     def move(self, direction):
         """Slide a tile in one of 4 directions.
@@ -60,3 +61,14 @@ class Grid:
             for (x, value) in enumerate(row):
                 if value == tile:
                     return (y, x)
+
+    def visualize_grid(self):
+        "Display current game board"
+        print('\n+---++---++---+')
+        for x in range(self.n):
+            for y in range(self.n):
+                if self.state[x][y] != 0:
+                    print('|', self.state[x][y], '|', end='')
+                else:
+                    print('|', ' ', '|', end='')
+            print('\n+---++---++---+')

@@ -41,7 +41,8 @@ class Solver:
         while self.frontier.queue:
 
             state = self.frontier.queue.pop()
-            print('---cur state : ', state.state)
+            # print('---cur state : ', state.state)
+            state.visualize_grid()
 
             self.metrics.search_depth = len(state.path_history)
             self.metrics.update_max_depth()
@@ -51,7 +52,6 @@ class Solver:
             if self.goal_test(state):
                 self.metrics.path_to_goal = state.path_history
                 self.metrics.stop_timer()
-                # self.metrics.measure_ram_useage()
                 return self.metrics
 
             self.expand_nodes(state)
