@@ -3,7 +3,7 @@ import copy
 
 class Grid:
 
-    """Represent the state of a grid: state, path_history, and heuristic score."""
+    """Represent the state of a grid: state, path_history."""
 
     def __init__(self, input_state):
 
@@ -15,9 +15,6 @@ class Grid:
 
         # TODO: we're calculating n here, but passing it between objects elsewhere. Tidy?
         self.n = len(input_state[0])
-
-        # determined by (manhattan) heuristic
-        self.score = 0
 
     def move(self, direction):
         """Slide a tile in one of 4 directions.
@@ -63,32 +60,3 @@ class Grid:
             for (x, value) in enumerate(row):
                 if value == tile:
                     return (y, x)
-
-    def manhattan_score(self, goal_state):
-        """Manhattan Priority Function.
-
-        https://heuristicswiki.wikispaces.com/Manhattan+Distance
-
-        Return the sum of the distances that each tile is
-        from its goal position.
-        """
-
-        sum = 0
-        for (y, row) in enumerate(self.state):
-            for (x, tile) in enumerate(row):
-                if tile == 0:
-                    continue
-                sum += self.manhattan_distance(tile, (y, x), goal_state)
-
-        return sum
-
-    def manhattan_distance(self, tile, tile_position, goal_state):
-        """Calculates the Manhattan distance between a given tile's position
-        and its position in goal_state"""
-
-        goal_position = self.locate_tile(tile, goal_state)
-
-        distance = (abs(goal_position[0] - tile_position[0])
-                    + abs(goal_position[1] - tile_position[1]))
-
-        return distance
