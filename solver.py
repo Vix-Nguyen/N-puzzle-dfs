@@ -35,11 +35,14 @@ class Solver:
         self.metrics.start_timer()
 
         initial_grid = grid.Grid(self.initial_state)
+
+        # push the initial node
         self.frontier.queue.append(initial_grid)
 
         # while queue is not empty..
         while self.frontier.queue:
 
+            # get the node by at the right-end of Frontier
             state = self.frontier.queue.pop()
             # print('---cur state : ', state.state)
             state.visualize_grid()
@@ -47,13 +50,17 @@ class Solver:
             self.metrics.search_depth = len(state.path_history)
             self.metrics.update_max_depth()
 
+            # add the the checked node to right-end of Explored
             self.explored.set.add(state)
 
+            # if the game end (matched with goal state):
+            #   print time and depth of the tree and queue
             if self.goal_test(state):
                 self.metrics.path_to_goal = state.path_history
                 self.metrics.stop_timer()
                 return self.metrics
 
+            # put child node of current node to Frotier
             self.expand_nodes(state)
 
         # if we get to here it's must be something wrong
@@ -62,35 +69,39 @@ class Solver:
     def expand_nodes(self, starting_grid):
         """Take a grid state, add all possible 'next moves' to the frontier"""
 
+        # node_order = ['right', 'left', 'down', 'up']
         node_order = ['right', 'left', 'down', 'up']
         # node_order = reversed(node_order)
 
+        # we treat node as the tile have position (right left down up) compare to the blank tile
         for node in node_order:
 
-            # the program is imagining the future!! (maybe change this name...)
-            imagined_grid = grid.Grid(starting_grid.state)
+            # get the next grid if folow the move
+            next_grid = grid.Grid(starting_grid.state)
 
-            # pass path history from previous grid to the next grid
-            # using copy to avoid python's reference bindings
-            imagined_grid.path_history = copy.copy(starting_grid.path_history)
+            if next_grid.move(node):  # returns false if move not possible
 
-            if imagined_grid.move(node):  # returns false if move not possible
+                # pass path history from previous grid to the next grid
+                # using copy(soft) to avoid python's reference bindings
+                next_grid.path_history = copy.copy(starting_grid.path_history)
 
-                imagined_grid.path_history.append(node)
+                next_grid.path_history.append(node)
 
-                if imagined_grid not in self.frontier and imagined_grid not in self.explored:
+                # check if next grid is a completely new state
+                if next_grid not in self.frontier and next_grid not in self.explored:
 
-                    self.frontier.queue.append(imagined_grid)
+                    # put the next grid at the right-end of the Frontier
+                    self.frontier.queue.append(next_grid)
 
                     self.metrics.update_max_fringe()
 
+            # Count all the nodes (even it's a blank node)
             self.metrics.nodes_expanded += 1
 
-    def goal_test(self, state):
-        """Compare a given state to the goal state. Return Boolean"""
+    def goal_test(self, current):
+        """Compare a given current state to the goal state. Return Boolean"""
 
-        # TODO: confusing names. state here is not a Grid.state but a Grid
-        if state.state == self.goal_state:
+        if current.state == self.goal_state:
             return True
         else:
             return False
@@ -107,6 +118,10 @@ class Solver:
         j = 0
         count = 1
 
+        # Goal state with blank at bottom right tile:
+        #1, 2, ...
+        # ....
+        # ...., 0
         while i < n:
             if count == n * n:
                 count = 0
@@ -133,12 +148,9 @@ class Solver:
         # solvability depends on the width...
         width = int(math.sqrt(len(input_list)))
 
-        # ..whether the row that zero is on is odd/even
-        # TODO: sort this list/grid confusion
+        # ..whether the row that zero is on is odd/even...
         temp_grid = grid.Grid(self.list_to_grid(input_list))
 
-        # TODO: see todo on grid.py:65 shouldn't be passing temp_grid.state
-        # to a method of temp_grid
         zero_location = temp_grid.locate_tile(0, temp_grid.state)
 
         if zero_location[0] % 2 == 0:

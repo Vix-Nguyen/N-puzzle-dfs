@@ -38,7 +38,7 @@ class Grid:
             y, x = 0, -1
         else:
             raise ValueError('Invalid direction: must be \'up\', \'down\', \
-                \'left\' or \'right\'')  # TODO: is this good design?
+                \'left\' or \'right\'')
 
         # return false if move not possible
         if zero_coords[0] + y not in range(0, self.n):
@@ -64,11 +64,22 @@ class Grid:
 
     def visualize_grid(self):
         "Display current game board"
-        print('\n+---++---++---+')
+
+        print('')  # newline
+        for i in range(self.n):
+            print('+----+', end='')
+        print('')  # end newline
+
         for x in range(self.n):
             for y in range(self.n):
+                # for each tile
                 if self.state[x][y] != 0:
-                    print('|', self.state[x][y], '|', end='')
+                    print('|', '%2s' % self.state[x][y], '|', end='')
                 else:
-                    print('|', ' ', '|', end='')
-            print('\n+---++---++---+')
+                    print('|', '  ', '|', end='')
+
+            # after one row, display +---+
+            print('')  # newline
+            for i in range(self.n):
+                print('+----+', end='')
+            print('')  # end newline

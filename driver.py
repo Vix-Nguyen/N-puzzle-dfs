@@ -14,10 +14,22 @@ input_list = sys.argv[1].split(',')
 input_list = list(map(int, input_list))
 print(input_list)
 
-if len(input_list) not in [4, 9, 16, 25]:
+
+def checkSquareNum(n):
+
+    for i in range(1, n + 1):
+        if (i**2 == n):
+            return True
+
+    return False
+
+
+# We actually can solve with any NxN, but i sometimes want to limit it
+if not checkSquareNum(len(input_list)):
     sys.stderr.write(
-        "Error: input grid must be nxn square where n is 2, 3, 4 or 5\n")
+        "Error: input grid must be nxn square\n")
     sys.exit()
+
 
 ordered_list = sorted(input_list)
 for index, number in enumerate(ordered_list):
@@ -36,11 +48,11 @@ except ValueError:
 
 solution_metrics = solver.depth_first_search()
 
-print("path_to_goal: " + str(solution_metrics.path_to_goal))
-print("cost_of_path: " + str(solution_metrics.cost_of_path()))
-print("nodes_expanded: " + str(solution_metrics.nodes_expanded))
-print("fringe_size: " + str(solution_metrics.fringe_size()))
-print("max_fringe_size: " + str(solution_metrics.max_fringe_size))
-print("search_depth: " + str(solution_metrics.search_depth))
-print("max_search_depth: " + str(solution_metrics.max_search_depth))
-print("running_time: " + str(solution_metrics.search_time) + "ms")
+print("Goal path: " + str(solution_metrics.path_to_goal))
+print("Cost of path: " + str(solution_metrics.cost_of_path()))
+print("Total node expanded: " + str(solution_metrics.nodes_expanded))
+print("Frontier size: " + str(solution_metrics.fringe_size()))
+print("Max Frontier get: " + str(solution_metrics.max_fringe_size))
+print("Goal state depth: " + str(solution_metrics.search_depth))
+print("Max depth get: " + str(solution_metrics.max_search_depth))
+print("Running time: " + str(solution_metrics.search_time) + "ms")
