@@ -69,9 +69,12 @@ class Solver:
     def expand_nodes(self, starting_grid):
         """Take a grid state, add all possible 'next moves' to the frontier"""
 
-        # node_order = ['right', 'left', 'down', 'up']
-        node_order = ['right', 'left', 'down', 'up']
-        # node_order = reversed(node_order)
+        node_order = ['up', 'down', 'left', 'right']
+        # THIS ACTUALLY TAKE RIGHT - LEFT - UP - DOWN in order
+        # So to clear the understanding, we reverse it
+
+        node_order = reversed(node_order)
+        # NOW IT TAKE UP - DOWN - LEFT - RIGHT
 
         # we treat node as the tile have position (right left down up) compare to the blank tile
         for node in node_order:

@@ -3,15 +3,19 @@ import grid
 import solver
 
 
-# validate command line input
-if len(sys.argv) != 2:
-    sys.stderr.write(
-        'Error: must be 2 command line arguments of the form:\npython driver.py <board>\n')
-    sys.exit()
+input_list = [1, 7, 2, 9, 4, 0, 12, 3, 14, 5, 6, 17,
+              8, 19, 10, 11, 22, 13, 24, 15, 16, 21, 18, 23, 20]
 
-# convert input string to a list of ints
-input_list = sys.argv[1].split(',')
-input_list = list(map(int, input_list))
+""" Uncomment these line to get input by keyboard (user define)"""
+# # validate command line input
+# if len(sys.argv) != 2:
+#     sys.stderr.write(
+#         'Error: must be 2 command line arguments of the form:\npython driver.py <board>\n')
+#     sys.exit()
+
+# # convert input string to a list of ints
+# input_list = sys.argv[1].split(',')
+# input_list = list(map(int, input_list))
 print(input_list)
 
 
